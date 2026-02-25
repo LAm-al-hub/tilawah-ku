@@ -279,13 +279,6 @@ class _QuranReaderScreenState extends State<QuranReaderScreen> {
                           icon: const Icon(Icons.bookmark_border),
                           tooltip: 'Save Last Read',
                           onPressed: () {
-                             // Correctly handle Surah ID for Juz reading mode
-                             // If we have surahId in Ayah model, use it.
-                             // Otherwise, fallback to widget.surahId (which might be incorrect for multi-surah juz view)
-                             // Since we don't have surahId in Ayah model (based on previous file read, it was added in fromJson but maybe not field?)
-                             // Let's check Ayah model again if needed.
-                             // Wait, I see "targetIndex = ayahs.indexWhere((a) => a.surahId == surahMatch.number);" in search logic.
-                             // This implies Ayah model HAS surahId.
                              _saveLastRead(ayah.surahId, ayah.number);
                           },
                         ),
@@ -297,7 +290,7 @@ class _QuranReaderScreenState extends State<QuranReaderScreen> {
                 Text(
                   ayah.textArabic,
                   textAlign: TextAlign.right,
-                  style: AppTheme.arabicText,
+                  style: AppTheme.arabicText(themeProvider.arabicFont),
                 ),
                 if (themeProvider.showLatin) ...[
                   const SizedBox(height: 16),

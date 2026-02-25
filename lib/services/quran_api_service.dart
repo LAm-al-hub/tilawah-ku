@@ -3,13 +3,18 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/surah.dart';
 import '../models/ayah.dart';
+import 'security_service.dart';
 
 class QuranApiService {
   static const String _baseUrl = 'https://equran.id/api';
+  final http.Client _client = SecurityService.getClient();
 
   Future<List<Surah>> getSurahList() async {
     try {
-      final response = await http.get(Uri.parse('$_baseUrl/surat'));
+      final response = await _client.get(
+        Uri.parse('$_baseUrl/surat'),
+        headers: SecurityService.getHeaders(),
+      );
       debugPrint("API List Response: ${response.statusCode}");
       if (response.statusCode == 200) {
         final dynamic decoded = jsonDecode(response.body);
@@ -35,19 +40,13 @@ class QuranApiService {
 
   Future<Map<String, dynamic>> getSurahDetail(int number) async {
     try {
-      final response = await http.get(Uri.parse('$_baseUrl/surat/$number'));
+      final response = await _client.get(
+        Uri.parse('$_baseUrl/surat/$number'),
+        headers: SecurityService.getHeaders(),
+      );
       debugPrint("API Detail Response ($number): ${response.statusCode}");
       if (response.statusCode == 200) {
         final Map<String, dynamic> body = jsonDecode(response.body);
-        
-        // Based on the log, the API returns the data directly in the root for detail call, OR 'data' is null but the fields are there?
-        // Let's check the log carefully.
-        // Log says: API Response (1): {"nomor":1,"nama":"الفاتحة", ... "ayat":[...]}
-        // It seems the structure is DIRECTLY the object, NOT wrapped in 'data' field for single surah detail?
-        // Wait, the log shows: API Response (1): {"nomor":1...}
-        // BUT the previous code was: final Map<String, dynamic> data = body['data'];
-        // And it threw "Data is null".
-        // This confirms that for /surat/{number}, the response IS the data object itself, not wrapped in "data".
         
         Map<String, dynamic> data;
         if (body.containsKey('data')) {

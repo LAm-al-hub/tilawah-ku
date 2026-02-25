@@ -15,8 +15,7 @@ class AppTheme {
       colorScheme: ColorScheme.light(
         primary: primaryColor,
         secondary: goldColor,
-        // ignore: deprecated_member_use
-      surface: surfaceColor,
+        surface: surfaceColor,
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: primaryColor,
@@ -113,12 +112,22 @@ class AppTheme {
     );
   }
 
-  static TextStyle get arabicText {
-    return GoogleFonts.amiri(
-      fontSize: 24,
-      fontWeight: FontWeight.bold,
-      // color: Colors.black87, // Remove hardcoded color
-      height: 2.0, // Better line height for Arabic
-    );
+  static TextStyle arabicText(String fontName) {
+    switch (fontName) {
+      case 'Amiri':
+        return GoogleFonts.amiri(fontSize: 24, fontWeight: FontWeight.bold, height: 2.0);
+      case 'Scheherazade':
+        return GoogleFonts.scheherazadeNew(fontSize: 24, fontWeight: FontWeight.bold, height: 2.0);
+      case 'Lateef':
+        return GoogleFonts.lateef(fontSize: 24, fontWeight: FontWeight.bold, height: 2.0);
+      case 'Cairo':
+        return GoogleFonts.cairo(fontSize: 24, fontWeight: FontWeight.bold, height: 2.0);
+      case 'Tajawal':
+        return GoogleFonts.tajawal(fontSize: 24, fontWeight: FontWeight.bold, height: 2.0);
+      case 'Changa':
+        return GoogleFonts.changa(fontSize: 24, fontWeight: FontWeight.bold, height: 2.0);
+      default:
+        return GoogleFonts.amiri(fontSize: 24, fontWeight: FontWeight.bold, height: 2.0);
+    }
   }
 }

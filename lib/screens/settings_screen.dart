@@ -5,6 +5,7 @@ import '../providers/theme_provider.dart';
 import '../providers/quran_provider.dart';
 import '../models/user_target.dart';
 import '../models/user_profile.dart';
+import '../utils/theme.dart'; // Add this import
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -58,6 +59,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               const Divider(),
               ListTile(
+                title: Text(l10n.arabicFont),
+                subtitle: Text(themeProvider.arabicFont),
+                trailing: const Icon(Icons.text_fields),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text(l10n.selectArabicFont),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: themeProvider.availableArabicFonts.map((font) {
+                            return RadioListTile<String>(
+                              title: Text(font),
+                              subtitle: Text('بسم الله الرحمن الرحيم', style: AppTheme.arabicText(font)),
+                              value: font,
+                              groupValue: themeProvider.arabicFont,
+                              onChanged: (value) {
+                                if (value != null) {
+                                  themeProvider.setArabicFont(value);
+                                  Navigator.pop(context);
+                                }
+                              },
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const Divider(),
+              ListTile(
                 title: Text(l10n.appLanguage),
                 subtitle: Text(themeProvider.languageCode == 'id' ? 'Indonesia' : 'English'),
                 trailing: const Icon(Icons.language),
@@ -65,16 +99,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text('Select Language'),
+                      title: Text(l10n.appLanguage),
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           RadioListTile<String>(
                             title: const Text('Indonesia'),
                             value: 'id',
-                            // ignore: deprecated_member_use
                             groupValue: themeProvider.languageCode,
-                            // ignore: deprecated_member_use
                             onChanged: (value) {
                               if (value != null) {
                                 themeProvider.setLanguage(value);
@@ -85,9 +117,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           RadioListTile<String>(
                             title: const Text('English'),
                             value: 'en',
-                            // ignore: deprecated_member_use
                             groupValue: themeProvider.languageCode,
-                            // ignore: deprecated_member_use
                             onChanged: (value) {
                               if (value != null) {
                                 themeProvider.setLanguage(value);

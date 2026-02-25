@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tilawah_ku/l10n/gen/app_localizations.dart';
 import '../providers/quran_provider.dart';
+import '../providers/theme_provider.dart';
 import '../utils/theme.dart';
 import '../utils/juz_data.dart';
 import 'quran_reader_screen.dart';
@@ -76,9 +77,13 @@ class SurahListScreen extends StatelessWidget {
                               ),
                               title: Text(surah.nameLatin, style: const TextStyle(fontWeight: FontWeight.bold)),
                               subtitle: Text('${surah.translation} • ${surah.numberOfAyahs} ${l10n.numberOfAyahs} • ${surah.place.toUpperCase()}'),
-                              trailing: Text(
-                                surah.name,
-                                style: AppTheme.arabicText.copyWith(fontSize: 20),
+                              trailing: Consumer<ThemeProvider>(
+                                builder: (context, themeProvider, child) {
+                                  return Text(
+                                    surah.name,
+                                    style: AppTheme.arabicText(themeProvider.arabicFont).copyWith(fontSize: 20),
+                                  );
+                                },
                               ),
                               onTap: () {
                                 Navigator.push(

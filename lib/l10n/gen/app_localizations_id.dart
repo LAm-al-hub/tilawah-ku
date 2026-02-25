@@ -189,4 +189,28 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get profileSaved => 'Profil berhasil disimpan';
+
+  @override
+  String get prayerSchedule => 'Jadwal Sholat';
+
+  @override
+  String get province => 'Provinsi';
+
+  @override
+  String get city => 'Kabupaten/Kota';
+
+  @override
+  String get enableNotifications => 'Aktifkan Notifikasi Sholat';
+
+  @override
+  String get notificationEnabled => 'Notifikasi sholat diaktifkan';
+
+  @override
+  String get failedToLoad => 'Gagal memuat data';
+
+  @override
+  String get arabicFont => 'Jenis Font Arab';
+
+  @override
+  String get selectArabicFont => 'Pilih Font Arab';
 }

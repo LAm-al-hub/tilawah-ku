@@ -58,5 +58,13 @@
   "userName": "Nama",
   "email": "Email",
   "saveProfile": "Simpan Profil",
-  "profileSaved": "Profil berhasil disimpan"
+  "profileSaved": "Profil berhasil disimpan",
+  "prayerSchedule": "Jadwal Sholat",
+  "province": "Provinsi",
+  "city": "Kabupaten/Kota",
+  "enableNotifications": "Aktifkan Notifikasi Sholat",
+  "notificationEnabled": "Notifikasi sholat diaktifkan",
+  "failedToLoad": "Gagal memuat data",
+  "arabicFont": "Jenis Font Arab",
+  "selectArabicFont": "Pilih Font Arab"
 }

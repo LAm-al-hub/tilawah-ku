@@ -457,6 +457,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile saved successfully'**
   String get profileSaved;
+
+  /// No description provided for @prayerSchedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer Schedule'**
+  String get prayerSchedule;
+
+  /// No description provided for @province.
+  ///
+  /// In en, this message translates to:
+  /// **'Province'**
+  String get province;
+
+  /// No description provided for @city.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get city;
+
+  /// No description provided for @enableNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Prayer Notifications'**
+  String get enableNotifications;
+
+  /// No description provided for @notificationEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer notifications enabled'**
+  String get notificationEnabled;
+
+  /// No description provided for @failedToLoad.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load data'**
+  String get failedToLoad;
+
+  /// No description provided for @arabicFont.
+  ///
+  /// In en, this message translates to:
+  /// **'Arabic Font'**
+  String get arabicFont;
+
+  /// No description provided for @selectArabicFont.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Arabic Font'**
+  String get selectArabicFont;
 }
 
 class _AppLocalizationsDelegate

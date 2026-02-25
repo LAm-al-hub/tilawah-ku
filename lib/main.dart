@@ -4,14 +4,16 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:tilawah_ku/l10n/gen/app_localizations.dart';
 import 'providers/quran_provider.dart';
 import 'providers/task_provider.dart';
 import 'providers/theme_provider.dart';
-import 'screens/dashboard_screen.dart';
+import 'screens/main_screen.dart';
+import 'services/notification_service.dart';
 import 'utils/theme.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
     // Initialize FFI for Web
@@ -21,12 +23,18 @@ void main() {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
   }
+
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -48,10 +56,57 @@ class MyApp extends StatelessWidget {
             locale: Locale(themeProvider.languageCode),
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            home: const DashboardScreen(),
+            home: const AppInitializer(),
           );
         },
       ),
+    );
+  }
+}
+
+class AppInitializer extends StatefulWidget {
+  const AppInitializer({super.key});
+
+  @override
+  State<AppInitializer> createState() => _AppInitializerState();
+}
+
+class _AppInitializerState extends State<AppInitializer> {
+  late Future<void> _initFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _initFuture = _initialize();
+  }
+
+  Future<void> _initialize() async {
+    try {
+      // Initialize date formatting
+      await initializeDateFormatting('id_ID', null);
+      
+      // Initialize Notification Service
+      await NotificationService().init();
+      await NotificationService().scheduleDailyReminder();
+    } catch (e) {
+      debugPrint("Initialization error: $e");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _initFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return const MainScreen();
+        }
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
     );
   }
 }

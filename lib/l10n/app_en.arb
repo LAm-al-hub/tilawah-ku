@@ -58,5 +58,13 @@
   "userName": "Name",
   "email": "Email",
   "saveProfile": "Save Profile",
-  "profileSaved": "Profile saved successfully"
+  "profileSaved": "Profile saved successfully",
+  "prayerSchedule": "Prayer Schedule",
+  "province": "Province",
+  "city": "City",
+  "enableNotifications": "Enable Prayer Notifications",
+  "notificationEnabled": "Prayer notifications enabled",
+  "failedToLoad": "Failed to load data",
+  "arabicFont": "Arabic Font",
+  "selectArabicFont": "Select Arabic Font"
 }

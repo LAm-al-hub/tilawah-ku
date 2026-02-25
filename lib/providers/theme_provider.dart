@@ -6,11 +6,22 @@ class ThemeProvider with ChangeNotifier {
   bool _showLatin = true;
   bool _showTranslation = true;
   String _languageCode = 'id'; // Default to Indonesian
+  String _arabicFont = 'Amiri'; // Default Arabic Font
 
   bool get isDarkMode => _isDarkMode;
   bool get showLatin => _showLatin;
   bool get showTranslation => _showTranslation;
   String get languageCode => _languageCode;
+  String get arabicFont => _arabicFont;
+
+  final List<String> availableArabicFonts = [
+    'Amiri',
+    'Scheherazade',
+    'Lateef',
+    'Cairo',
+    'Tajawal',
+    'Changa',
+  ];
 
   ThemeProvider() {
     _loadSettings();
@@ -22,6 +33,7 @@ class ThemeProvider with ChangeNotifier {
     _showLatin = prefs.getBool('show_latin') ?? true;
     _showTranslation = prefs.getBool('show_translation') ?? true;
     _languageCode = prefs.getString('language_code') ?? 'id';
+    _arabicFont = prefs.getString('arabic_font') ?? 'Amiri';
     notifyListeners();
   }
 
@@ -52,5 +64,13 @@ class ThemeProvider with ChangeNotifier {
     notifyListeners(); // Notify listeners immediately for UI update
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('language_code', code);
+  }
+
+  Future<void> setArabicFont(String fontName) async {
+    if (_arabicFont == fontName) return;
+    _arabicFont = fontName;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('arabic_font', fontName);
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -14,6 +15,9 @@ class LocalStorageService {
   static const String _userProfileKey = 'user_profile';
   static const String _dailyProgressKey = 'daily_progress';
   static const String _dailyProgressDateKey = 'daily_progress_date';
+
+  // Secure Storage for sensitive data (e.g., user profile if it had tokens, or just PI)
+  final _secureStorage = const FlutterSecureStorage();
 
   // --- SharedPreferences (Settings & Last Read) ---
 
@@ -68,14 +72,29 @@ class LocalStorageService {
     return null;
   }
 
+  // Changed to Secure Storage for User Profile
   Future<void> saveUserProfile(UserProfile profile) async {
+    await _secureStorage.write(key: _userProfileKey, value: jsonEncode(profile.toJson()));
+    // Also sync to SharedPreferences for main.dart sync check (or update main.dart to use secure storage)
+    // For now, we keep SharedPreferences as a fallback/flag but store actual data securely
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_userProfileKey, jsonEncode(profile.toJson()));
+    await prefs.setString(_userProfileKey, jsonEncode(profile.toJson())); 
   }
 
   Future<UserProfile?> getUserProfile() async {
-    final prefs = await SharedPreferences.getInstance();
-    final String? profileJson = prefs.getString(_userProfileKey);
+    // Try secure storage first
+    String? profileJson = await _secureStorage.read(key: _userProfileKey);
+    
+    // Fallback to SharedPreferences if not in secure storage (migration path)
+    if (profileJson == null) {
+       final prefs = await SharedPreferences.getInstance();
+       profileJson = prefs.getString(_userProfileKey);
+       // If found in prefs but not secure, migrate it
+       if (profileJson != null) {
+         await _secureStorage.write(key: _userProfileKey, value: profileJson);
+       }
+    }
+
     if (profileJson != null) {
       return UserProfile.fromJson(jsonDecode(profileJson));
     }

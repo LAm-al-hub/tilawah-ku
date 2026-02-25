@@ -188,4 +188,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profileSaved => 'Profile saved successfully';
+
+  @override
+  String get prayerSchedule => 'Prayer Schedule';
+
+  @override
+  String get province => 'Province';
+
+  @override
+  String get city => 'City';
+
+  @override
+  String get enableNotifications => 'Enable Prayer Notifications';
+
+  @override
+  String get notificationEnabled => 'Prayer notifications enabled';
+
+  @override
+  String get failedToLoad => 'Failed to load data';
+
+  @override
+  String get arabicFont => 'Arabic Font';
+
+  @override
+  String get selectArabicFont => 'Select Arabic Font';
 }
